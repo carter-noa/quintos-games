@@ -4,6 +4,37 @@
 
 	const hangman = [
 		`
+      
+      
+=========`,
+		`
+      
+      |
+=========`,
+		`
+      |
+      |
+=========`,
+		`
+      |
+      |
+      |
+=========`,
+		`
+      |
+      |
+      |
+      |
+=========`,
+		`
+  +---+
+      |
+      |
+      |
+      |
+      |
+=========`,
+		`
   +---+
   |   |
       |
@@ -44,7 +75,7 @@
       |
 =========`,
 		`
-  +---+
+  +---++
   |   |
   O   |
  /|\\  |
@@ -68,42 +99,55 @@
 	let words = wordsList.split(' ');
 	log(words);
 
-	let sus = Math.random() * words.length;
-	sus = Math.floor(sus);
-	log(sus);
+	let choice = 'yes im not sus';
+	while (choice == 'yes im not sus') {
+		let sus = Math.random() * words.length;
+		sus = Math.floor(sus);
+		log(sus);
 
-	let word = words[sus];
-	log(word);
+		let word = words[sus];
+		log(word);
 
-	/* PART B: make an array with a line for each letter in the word */
-	// Example word: 'quiz'
-	// lines -> ['_', '_', '_', '_']
-	let lines = '_'.repeat(word.length).split('');
-	log(lines);
+		/* PART B: make an array with a line for each letter in the word */
+		// Example word: 'quiz'
+		// lines -> ['_', '_', '_', '_']
+		let lines = '_'.repeat(word.length).split('');
+		log(lines);
 
-	let wrong = 0;
+		let wrong = 0;
 
-	// game loop, loops will the lines array has a blank line
-	while (lines.includes('_')) {
-		/* PART C: show the lines for the word below the hangman art */
-		let guess = await prompt(hangman[wrong] + '\n \n' + lines.join(' '));
+		// game loop, loops will the lines array has a blank line
+		while (lines.includes('_')) {
+			/* PART C: show the lines for the word below the hangman art */
+			let guess = await prompt(hangman[wrong] + '\n \n' + lines.join(' '));
 
-		let i = 0;
-
-		let isCorrect = false;
-		// loops through the characters in the word
-		while (i < word.length) {
-			// check if guess is equal to the letter in the word at index i
-			if (guess == word[i]) {
-				lines[i] = guess;
-				isCorrect = true;
+			if (guess == word) {
+				break;
 			}
-			i = i + 1;
-		}
 
-		if (isCorrect == false) {
-			wrong = wrong + 1;
+			let isCorrect = false;
+			// loops through the characters in the word
+			for (let i = 0; i < word.length; i++) {
+				// check if guess is equal to the letter in the word at index i
+				if (guess == word[i]) {
+					lines[i] = guess;
+					isCorrect = true;
+				}
+			}
+
+			if (isCorrect == false) {
+				wrong = wrong + 1;
+			}
+
+			if (wrong > hangman.length - 1) {
+				await alert(' HAH! You lost! The word was ' + word);
+				break;
+			}
 		}
+		if (wrong < hangman.length) {
+			await alert('GOOD JOB your not sus (u won)');
+		}
+		choice = await prompt('play again? or nah?\n\tyes? if ya pick this your not sus \n\tno? im cool with it if not');
 	}
 
 	exit(); // exits the game
