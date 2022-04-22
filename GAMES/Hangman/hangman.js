@@ -100,7 +100,7 @@
 	log(words);
 
 	let choice = 'yes im not sus';
-	while (choice == 'yes im not sus') {
+	while (choice.includes('yes')) {
 		let sus = Math.random() * words.length;
 		sus = Math.floor(sus);
 		log(sus);
@@ -115,11 +115,12 @@
 		log(lines);
 
 		let wrong = 0;
+		let wrongLetters = [];
 
 		// game loop, loops will the lines array has a blank line
 		while (lines.includes('_')) {
 			/* PART C: show the lines for the word below the hangman art */
-			let guess = await prompt(hangman[wrong] + '\n \n' + lines.join(' '));
+			let guess = await prompt(hangman[wrong] + '\n\n' + lines.join(' ') + '\n\n' + wrongLetters);
 
 			if (guess == word) {
 				break;
@@ -137,6 +138,7 @@
 
 			if (isCorrect == false) {
 				wrong = wrong + 1;
+				wrongLetters.push(guess);
 			}
 
 			if (wrong > hangman.length - 1) {
