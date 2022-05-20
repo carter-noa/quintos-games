@@ -49,20 +49,6 @@ text('─'.repeat(26), gridRow + 15, gridCol); // draw another horizontal line
 text('│\n'.repeat(23), gridRow, gridCol + 8);
 text('│\n'.repeat(23), gridRow, gridCol + 17); // draw another vertical line
 
-/* PART A: Make the buttons in the grid */
-// note the intervals! row += 8 and col += 9
-/*
-button(bigSpace, gridRow, gridCol);
-button(bigSpace, gridRow, gridCol + 9);
-button(bigSpace, gridRow, gridCol + 18);
-button(bigSpace, gridRow + 8, gridCol);
-button(bigSpace, gridRow + 8, gridCol + 9);
-button(bigSpace, gridRow + 8, gridCol + 18);
-button(bigSpace, gridRow + 16, gridCol);
-button(bigSpace, gridRow + 16, gridCol + 9);
-button(bigSpace, gridRow + 16, gridCol + 18);
-*/
-
 let turnX = true;
 
 let board = [
@@ -71,10 +57,35 @@ let board = [
 	['_', '_', '_']
 ];
 
+function checkForDraw() {
+	for (let i = 0; i < 3; i++) {
+		for (let j = 0; j < 3; j++) {
+			if (board[i][j] == '_') {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
 function checkForWinner(mark) {
-	if (board[0][0] == mark && board[0][1] == mark && board[0][2] == mark) {
+	for (let i = 0; i < 3; i++) {
+		if (board[i][0] == mark && board[i][1] == mark && board[i][2] == mark) {
+			return true;
+		}
+
+		if (board[0][i] == mark && board[1][i] == mark && board[2][i] == mark) {
+			return true;
+		}
+	}
+
+	if (board[0][0] == mark && board[1][1] == mark && board[2][2] == mark) {
 		return true;
 	}
+	if (board[0][2] == mark && board[1][1] == mark && board[2][0] == mark) {
+		return true;
+	}
+
 	return false;
 }
 
@@ -99,7 +110,14 @@ async function takeTurn(row, col) {
 
 	if (checkForWinner(mark)) {
 		await alert(
-			' congrats! u have won this game for some kind of reason! still reading this? well if u continue reading this then there might be a specil prize just waiting for u! nah im kiddin wit ya. anyways hy are u still ready when u could be playing a gud game i know! raid shadow legends. nah im not like that. anyways u just got rickrolled BYE!',
+			'congrats! u have won this game for some kind of reason! still reading this? well if u continue reading this then there might be a specil prize just waiting for u! nah im kiddin wit ya. anyways hy are u still ready when u could be playing a gud game i know! raid shadow legends. nah im not like that. anyways u just got rickrolled BYE!',
+			1,
+			52,
+			26
+		);
+	} else if (checkForDraw()) {
+		await alert(
+			'hey there buddy chum pal buddy pal friendly friend friend, i hate to be not so friendly with u my friendly friend friend home slice bread slice dawg amigo bun bun, but u people had a draw so to bad ur gonna have to try all over again, dont want to? well click f11 for free vbucks, not falling for that? well if ur still reading this then u just got amongused!',
 			1,
 			52,
 			26
