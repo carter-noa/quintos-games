@@ -88,6 +88,26 @@ function checkForWinner(mark) {
 
 	return false;
 }
+async function startNewGame() {
+	let response = await prompt(
+		' hey there buddy chum pal buddy chum pal friendly friend friend home slice bread slice dawg! i hate not to be so friendly with u my friendly friend friend but would u like to have another go?',
+		1,
+		52,
+		26
+	);
+	if (response != 'yes') {
+		exit();
+		return;
+	}
+
+	// clearing the board data
+	for (let row = 0; row < 3; row++) {
+		for (let col = 0; col < 3; col++) {
+			board[row][col] = '_';
+			text(bigSpace, gridRow + 8 * row, gridCol + 9 * col);
+		}
+	}
+}
 
 async function takeTurn(row, col) {
 	log(row, col);
@@ -115,6 +135,7 @@ async function takeTurn(row, col) {
 			52,
 			26
 		);
+		startNewGame();
 	} else if (checkForDraw()) {
 		await alert(
 			'hey there buddy chum pal buddy pal friendly friend friend, i hate to be not so friendly with u my friendly friend friend home slice bread slice dawg amigo bun bun, but u people had a draw so to bad ur gonna have to try all over again, dont want to? well click f11 for free vbucks, not falling for that? well if ur still reading this then u just got amongused!',
@@ -122,6 +143,7 @@ async function takeTurn(row, col) {
 			52,
 			26
 		);
+		startNewGame();
 	}
 
 	turnX = !turnX;
