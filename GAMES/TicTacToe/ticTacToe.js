@@ -49,7 +49,9 @@ text('─'.repeat(26), gridRow + 15, gridCol); // draw another horizontal line
 text('│\n'.repeat(23), gridRow, gridCol + 8);
 text('│\n'.repeat(23), gridRow, gridCol + 17); // draw another vertical line
 
-let turnX = true;
+let turnX = Math.random() > 0.5;
+let scoreX = 0;
+let scoreO = 0;
 
 let board = [
 	['_', '_', '_'],
@@ -107,15 +109,34 @@ async function startNewGame() {
 			text(bigSpace, gridRow + 8 * row, gridCol + 9 * col);
 		}
 	}
+
+	displayTurn();
+	displayScores();
+}
+
+displayTurn();
+
+function displayTurn() {
+	if (turnX) {
+		text("x's turn", 3, 58);
+	} else text("o's turn", 3, 58);
+}
+
+function displayScores() {
+	text('Player X: ' + scoreX, 5, 58);
+	text('Player O: ' + scoreO, 9, 58);
 }
 
 async function takeTurn(row, col) {
 	log(row, col);
+	// player can't place their mark in the space they choose
+	// it is already taken!
 	if (board[row][col] != '_') {
 		await alert(' Stop BEING SUS (play by the rules!)', 10, 56, 20);
 		return;
 	}
 
+	// player can place their mark in the choosen space
 	let mark;
 	if (turnX) {
 		text(bigX, gridRow + 8 * row, gridCol + 9 * col);
@@ -128,6 +149,7 @@ async function takeTurn(row, col) {
 	}
 	log(board.join('\n'));
 
+	// if the player who just took their turn has one
 	if (checkForWinner(mark)) {
 		await alert(
 			'congrats! u have won this game for some kind of reason! still reading this? well if u continue reading this then there might be a specil prize just waiting for u! nah im kiddin wit ya. anyways hy are u still ready when u could be playing a gud game i know! raid shadow legends. nah im not like that. anyways u just got rickrolled BYE!',
@@ -135,6 +157,13 @@ async function takeTurn(row, col) {
 			52,
 			26
 		);
+
+		if (turnX) {
+			scoreX = scoreX + 1;
+		} else {
+			scoreO = scoreO + 1;
+		}
+
 		startNewGame();
 	} else if (checkForDraw()) {
 		await alert(
@@ -146,7 +175,9 @@ async function takeTurn(row, col) {
 		startNewGame();
 	}
 
+	// change turns
 	turnX = !turnX;
+	displayTurn();
 }
 
 for (let row = 0; row < 3; row++) {
@@ -156,3 +187,5 @@ for (let row = 0; row < 3; row++) {
 		});
 	}
 }
+
+displayScores();
